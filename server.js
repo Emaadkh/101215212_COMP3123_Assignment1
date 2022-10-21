@@ -15,7 +15,7 @@ const SERVER_PORT = 3000
 mongoose.Promise = global.Promise;
 
 mongoose
-  .connect("mongodb+srv://Emaadkh:Emad2572@cluster0.f2ujd7x.mongodb.net/database_company?retryWrites=true&w=majority",
+  .connect("mongodb+srv://Emaadkh:Emad2572@cluster0.f2ujd7x.mongodb.net/comp3123_assigment1?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,

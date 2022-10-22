@@ -1,22 +1,25 @@
-const express = require('express')
+const express = require('express');
+const employeeModel = require('../models/employees');
 const route = express.Router()
 const emp = require('../models/employees')
 
 route.post('/employees', async(req, res) => {
     
     try {
-        if(req.body.content) {
+        if (!req.body) {
             return res.status(400).send({
-                message: "Employee content can not be empty"
+              message: "employee content can not be empty",
             });
+          }else{
+            const newemployee = new employeeModel(req.body);
+            const employee = await newemployee.save();
+            res.status(201).send(employee);
+    
+          }
         }
-        const employee = new emp(req.body)
-        await employee.save()
-        res.status(201).send(employee)
-    }
-    catch(error) {
-        res.status(500).send(error)
-    }
+        catch (error) {
+        res.status(500).send(error);
+      }
 });
 
 route.get('/employees', async(req, res) => {
@@ -33,52 +36,57 @@ route.get('/employees', async(req, res) => {
 route.get('/employees/:eid', async(req, res) => {
     
     try {
-        if(req.body.content) {
+        if (!req.body) {
             return res.status(400).send({
-                message: "Employee content can not be empty"
+              message: "employee content can not be empty",
             });
-        }
-        const employee = await emp.findById(req.params.eid)
-        res.status(200).send(employee)
-    }
-    catch(error) {
-        res.status(500).send(error)
+          }else{
+            const newEmployee = await employeeModel.findById(req.params.eid, req.body);
+            res.status(200).send(newEmployee);
+          }
+      
+    } catch (error) {
+      res.status(500).send(error);
     }
     
 });
 
 route.put('/employees/:eid', async(req, res) => {
     try {
-        if(req.body.content) {
+        if (!req.body) {
             return res.status(400).send({
-                message: "Employee content can not be empty"
+              message: "employee content can not be empty",
             });
-        }
-        console.log(req.body)
-        const updatedEmployee = await emp.findByIdAndUpdate(req.params.eid, req.body)
-        await updatedEmployee.save()
-        res.status(202).send(req.body)
-      } catch (err) {
-        res.status(500).send(err)
-      }
+          }else{
+            const newEmployee = await employeeModel.findByIdAndUpdate(
+                req.params.eid,
+                req.body
+              );
+              res.status(202).send(newEmployee);
+          }
+    } catch (error) {
+      res.status(500).send(error);
+    }
     
 });
 
 route.delete('/employees/:eid', async (req, res) => {
     try {
-        if(req.body.content) {
+        if(!req.body) {
             return res.status(400).send({
-                message: "Employee content can not be empty"
+                message: "employee content can not be empty"
             });
+        }else{
+            const deletedEmployee = await employeeModel.findByIdAndDelete(req.params.eid);
+            
+            if (!deletedEmployee){
+                res.status(404).send({message: "No employee to be Deleted"});
+            }
+            res.status(204).send(deletedEmployee);
         }
-        const employee = await emp.findByIdAndDelete(req.params.eid)
-        if (!employee) { 
-            res.status(404).send("No item found")
-        }
-        res.status(204).send(employee)
-      } catch (err) {
-        res.status(500).send(err)
-      }
+    }catch (error){
+        res.status(500).send(error)
+    }
 });
 
 module.exports = route

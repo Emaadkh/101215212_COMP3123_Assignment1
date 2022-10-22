@@ -3,12 +3,13 @@ const route = express.Router()
 const emp = require('../models/employees')
 
 route.post('/employees', async(req, res) => {
-    if(req.body.content) {
-        return res.status(400).send({
-            message: "Employee content can not be empty"
-        });
-    }
+    
     try {
+        if(req.body.content) {
+            return res.status(400).send({
+                message: "Employee content can not be empty"
+            });
+        }
         const employee = new emp(req.body)
         await employee.save()
         res.status(201).send(employee)
@@ -30,12 +31,13 @@ route.get('/employees', async(req, res) => {
 
 
 route.get('/employees/:eid', async(req, res) => {
-    if(req.body.content) {
-        return res.status(400).send({
-            message: "Employee content can not be empty"
-        });
-    }
+    
     try {
+        if(req.body.content) {
+            return res.status(400).send({
+                message: "Employee content can not be empty"
+            });
+        }
         const employee = await emp.findById(req.params.eid)
         res.status(200).send(employee)
     }
@@ -46,13 +48,12 @@ route.get('/employees/:eid', async(req, res) => {
 });
 
 route.put('/employees/:eid', async(req, res) => {
-    // Validate request
-    if(req.body.content) {
-        return res.status(400).send({
-            message: "Employee content can not be empty"
-        });
-    }
     try {
+        if(req.body.content) {
+            return res.status(400).send({
+                message: "Employee content can not be empty"
+            });
+        }
         console.log(req.body)
         const updatedEmployee = await emp.findByIdAndUpdate(req.params.eid, req.body)
         await updatedEmployee.save()
@@ -64,14 +65,13 @@ route.put('/employees/:eid', async(req, res) => {
 });
 
 route.delete('/employees/:eid', async (req, res) => {
-    if(req.body.content) {
-        return res.status(400).send({
-            message: "Employee content can not be empty"
-        });
-    }
     try {
+        if(req.body.content) {
+            return res.status(400).send({
+                message: "Employee content can not be empty"
+            });
+        }
         const employee = await emp.findByIdAndDelete(req.params.eid)
-    
         if (!employee) { 
             res.status(404).send("No item found")
         }

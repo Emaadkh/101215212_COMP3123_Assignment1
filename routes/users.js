@@ -6,13 +6,12 @@ const userModel = require('../models/users')
 const route = express.Router()
 
 route.post('/user/signup', async(req, res) => {
-
-    if(req.body.content) {
-        return res.status(400).send({
-            message: "User content can not be empty"
-        });
-    }
     try { 
+        if(req.body.content) {
+            return res.status(400).send({
+                message: "User content can not be empty"
+            });
+        }
         const user = new userModel(req.body)
         await user.save()
         res.status(201, { message: "Successfully added user"}).send(user)

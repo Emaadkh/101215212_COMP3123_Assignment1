@@ -6,12 +6,8 @@ const userModel = require('../models/users')
 const route = express.Router()
 
 route.post('/user/signup', async(req, res) => {
+
     try { 
-        if(req.body.content) {
-            return res.status(400).send({
-                message: "User content can not be empty"
-            });
-        }
         const user = new userModel(req.body)
         await user.save()
         res.status(201, { message: "Successfully added user"}).send(user)
@@ -22,17 +18,13 @@ route.post('/user/signup', async(req, res) => {
 })
 
 route.post('/user/login', async(req, res) => {
-    if(req.body.content) {
-        return res.status(400).send({
-            message: "User content can not be empty"
-        });
-    }
+  
     let password = req.body.password
     let userName = req.body.username
     const user = await userModel.findOne({username : userName})
 
     if(!user) {
-        res.status(404).send({"message": "Error"})
+        res.status(404).send({"message": "Error "})
     }
 
 
@@ -43,6 +35,8 @@ route.post('/user/login', async(req, res) => {
         res.status(500).send({status: false, message: "Incorrect username or password"})
     }
 })
+
+
 module.exports = route
 
 /*

@@ -32,7 +32,7 @@ route.post('/user/login', async(req, res) => {
     const user = await userModel.findOne({username : userName})
 
     if(!user) {
-        res.status(404).send({"message": "Error of authentification"})
+        res.status(404).send({"message": "Error"})
     }
 
 

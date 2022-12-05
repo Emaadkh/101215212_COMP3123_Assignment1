@@ -11,7 +11,7 @@ app.use(express.json());
 app.use("/api", userRouter);
 app.use("/api/emp", employeeRouter);
 
-const SERVER_PORT = 3000
+const SERVER_PORT = 3030
 mongoose.Promise = global.Promise;
 
 mongoose
